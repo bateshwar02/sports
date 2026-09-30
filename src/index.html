@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>आरव दो दिवसीय खेलकूद एवं सामान्य ज्ञान प्रतियोगिता</title>
+<style>
+:root{
+  --primary:#8b155d;
+  --pink:#d41472;
+  --green:#168a4a;
+  --gold:#f2a900;
+  --dark:#16213e;
+  --cream:#fff9df;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Noto Sans Devanagari","Mangal","Arial",sans-serif;
+  color:#222;
+  background:linear-gradient(135deg,#fffdf1,#eef9ff);
+}
+img{max-width:100%;display:block}
+.container{width:min(1180px,92%);margin:auto}
+
+/* Header */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(10px);
+  box-shadow:0 3px 18px rgba(0,0,0,.1);
+}
+.nav{
+  min-height:76px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--dark)}
+.brand-badge{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),var(--green));
+  display:grid;place-items:center;color:#fff;font-weight:900;
+  box-shadow:0 5px 15px rgba(139,21,93,.25)
+}
+.brand strong{font-size:18px;line-height:1.15}
+.brand small{display:block;color:#666;font-size:11px}
+.navlinks{display:flex;gap:8px;align-items:center}
+.navlinks a{
+  text-decoration:none;color:#333;font-weight:700;
+  padding:10px 14px;border-radius:22px
+}
+.navlinks a:hover{background:#fff0f7;color:var(--pink)}
+.btn{
+  display:inline-block;border:0;border-radius:28px;padding:13px 23px;
+  font-weight:800;text-decoration:none;cursor:pointer
+}
+.btn-primary{color:white;background:linear-gradient(90deg,var(--pink),#ff5b36)}
+.btn-secondary{color:var(--dark);background:white;border:2px solid var(--primary)}
+
+/* Hero */
+.hero{
+  padding:65px 0 75px;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(20,151,86,.18),transparent 25%),
+    radial-gradient(circle at 90% 10%,rgba(212,20,114,.17),transparent 25%),
+    linear-gradient(135deg,#fff7d9,#eaf9f3 55%,#f7e8f4);
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:45px;align-items:center}
+.kicker{color:var(--green);font-weight:900;letter-spacing:.8px;font-size:15px}
+.hero h1{
+  margin:12px 0;font-size:clamp(34px,5vw,64px);line-height:1.08;
+  color:#9e154d;
+  text-shadow:1px 1px 0 #fff
+}
+.hero h1 span{color:#138447}
+.hero p{font-size:19px;line-height:1.8;color:#444;max-width:650px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.poster-wrap{
+  background:white;padding:12px;border-radius:24px;
+  box-shadow:0 20px 55px rgba(31,55,70,.2);
+  transform:rotate(1deg)
+}
+.poster-wrap img{border-radius:15px;width:100%}
+
+/* Info cards */
+.info{padding:55px 0;background:#fff}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{
+  background:#fff;border:1px solid #eee;border-radius:18px;padding:25px;
+  box-shadow:0 8px 25px rgba(0,0,0,.07)
+}
+.icon{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+  color:white;font-size:23px;margin-bottom:14px
+}
+.card:nth-child(1) .icon{background:#168a4a}
+.card:nth-child(2) .icon{background:#d41472}
+.card:nth-child(3) .icon{background:#f2a900}
+.card:nth-child(4) .icon{background:#1976d2}
+.card h3{margin:0 0 8px;color:#172b4d}
+.card p{margin:0;color:#666;line-height:1.6}
+
+/* Schedule */
+.schedule{padding:70px 0;background:#f6fbff}
+.section-title{text-align:center;margin-bottom:35px}
+.section-title .eyebrow{color:var(--pink);font-weight:900}
+.section-title h2{font-size:36px;color:var(--dark);margin:8px 0}
+.section-title p{color:#68758a}
+.day{
+  margin:30px 0;border-radius:20px;overflow:hidden;background:white;
+  box-shadow:0 10px 30px rgba(0,0,0,.08)
+}
+.day-title{
+  padding:18px 22px;color:white;font-size:22px;font-weight:900;
+  background:linear-gradient(90deg,#a31256,#d41472)
+}
+table{width:100%;border-collapse:collapse}
+th,td{padding:14px 12px;text-align:left;border-bottom:1px solid #eee}
+th{background:#f1f8e9;color:#333}
+tr:hover td{background:#fffaf0}
+
+/* CTA */
+.cta{
+  padding:70px 0;text-align:center;color:#fff;
+  background:linear-gradient(135deg,#16213e,#8b155d 65%,#d41472)
+}
+.cta h2{font-size:40px;margin:0 0 12px}
+.cta p{font-size:18px;opacity:.9;margin-bottom:25px}
+
+/* Footer */
+footer{background:#101827;color:#dbe3ef;padding:30px 0}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer p{margin:5px 0;color:#aeb8c8}
+footer a{color:#fff;text-decoration:none;margin-right:15px}
+
+
+/* Event details */
+.event-details{padding:75px 0;background:linear-gradient(135deg,#fff9df,#eef8ed)}
+.details-grid{display:grid;grid-template-columns:minmax(300px,520px) 1fr;gap:40px;align-items:start}
+.details-poster{background:#fff;padding:10px;border-radius:22px;box-shadow:0 15px 45px rgba(0,0,0,.16)}
+.details-poster img{width:100%;border-radius:15px}
+.details-content{display:grid;gap:18px}
+.detail-box{background:#fff;border:1px solid #eadfc5;border-radius:18px;padding:22px;box-shadow:0 7px 22px rgba(0,0,0,.06)}
+.detail-box h3{margin:0 0 12px;color:#8b155d;font-size:21px}
+.detail-box p{line-height:1.7;color:#555;margin:7px 0}
+.detail-box ul{margin:0;padding-left:22px;color:#555;line-height:1.9}
+@media(max-width:900px){
+  .details-grid{grid-template-columns:1fr}
+  .details-poster{max-width:650px;margin:auto}
+}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .poster-wrap{max-width:600px;margin:auto}
+  .cards{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+  .nav{min-height:68px}
+  .brand strong{font-size:15px}
+  .navlinks a:not(.register){display:none}
+  .hero{padding:38px 0 50px}
+  .hero h1{font-size:36px}
+  .hero p{font-size:16px}
+  .cards{grid-template-columns:1fr}
+  .section-title h2{font-size:28px}
+  .day{overflow-x:auto}
+  table{min-width:650px}
+  .cta h2{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav">
+    <a href="#" class="brand">
+      <div class="brand-badge">🏆</div>
+      <div><strong>आरव खेलकूद</strong><small>खेल एवं सामान्य ज्ञान प्रतियोगिता</small></div>
+    </a>
+    <nav class="navlinks">
+      <a href="#home">होम</a>
+      <a href="#schedule">कार्यक्रम</a>
+      <a href="#sports">खेल</a>
+      <a href="#details">आयोजन विवरण</a><a href="#about">हमारे बारे में</a>
+      <a class="btn btn-primary register" href="#register">पंजीकरण</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="kicker">🏃‍♂️ खेल • प्रतिभा • ज्ञान • सहभागिता</div>
+      <h1>आरव दो दिवसीय <span>खेलकूद एवं सामान्य ज्ञान</span> प्रतियोगिता</h1>
+      <p>
+        बच्चों और युवाओं को खेल, रचनात्मकता और ज्ञान के माध्यम से आगे बढ़ने का अवसर।
+        प्रतियोगिता में भाग लें, अपनी प्रतिभा दिखाएं और अपने गांव/विद्यालय का नाम रोशन करें।
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#register">🏅 अभी पंजीकरण करें</a>
+        <a class="btn btn-secondary" href="#schedule">📅 कार्यक्रम देखें</a>
+      </div>
+    </div>
+    <div class="poster-wrap">
+      <img src="poster.jpg" alt="आरव दो दिवसीय खेलकूद एवं सामान्य ज्ञान प्रतियोगिता पोस्टर">
+    </div>
+  </div>
+</section>
+
+<section class="info" id="sports">
+  <div class="container cards">
+    <div class="card"><div class="icon">🏃</div><h3>दौड़ प्रतियोगिता</h3><p>1600 मीटर, 1000 मीटर और 500 मीटर सहित विभिन्न दौड़ प्रतियोगिताएं।</p></div>
+    <div class="card"><div class="icon">🏆</div><h3>कूद प्रतियोगिता</h3><p>लंबी कूद और ऊंची कूद में प्रतिभागियों को अपनी क्षमता दिखाने का अवसर।</p></div>
+    <div class="card"><div class="icon">♟</div><h3>ज्ञान एवं खेल</h3><p>लिखित परीक्षा, शतरंज, एनिमेशन गेम और अन्य गतिविधियां।</p></div>
+    <div class="card"><div class="icon">🎨</div><h3>रचनात्मक गतिविधियां</h3><p>कला/आर्ट और अन्य रचनात्मक प्रतियोगिताओं में भाग लें।</p></div>
+  </div>
+</section>
+
+<section id="schedule" class="schedule">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">कार्यक्रम की समय-सारणी</div>
+      <h2>दो दिनों का पूरा कार्यक्रम</h2>
+      <p>पोस्टर में दिए गए कार्यक्रम के अनुसार प्रतियोगिताओं में समय पर पहुंचें।</p>
+    </div>
+
+    <div class="day">
+      <div class="day-title">प्रथम दिवस कार्यक्रम — 06/11/2026</div>
+      <table>
+        <thead><tr><th>समय</th><th>गतिविधि</th><th>वर्ग</th><th>योग्यता</th></tr></thead>
+        <tbody>
+          <tr><td>09:00</td><td>1600 मीटर दौड़</td><td>बालक</td><td>ब्लॉक स्तर</td></tr>
+          <tr><td>09:15</td><td>1000 मीटर दौड़</td><td>बालिका</td><td>कक्षा 6 से ऊपर</td></tr>
+          <tr><td>09:30</td><td>1000 मीटर दौड़</td><td>बालक</td><td>कक्षा 6 से 9 तक</td></tr>
+          <tr><td>09:40</td><td>500 मीटर दौड़</td><td>बालिका</td><td>कक्षा 5 से 8 तक</td></tr>
+          <tr><td>10:00</td><td>लंबी कूद</td><td>बालक</td><td>कक्षा 10 तथा ऊपर</td></tr>
+          <tr><td>10:30</td><td>ऊंची कूद</td><td>बालक</td><td>कक्षा 10 तथा ऊपर</td></tr>
+          <tr><td>11:00</td><td>बोरी दौड़</td><td>बालक/बालिका</td><td>कक्षा 6 से 8 तक</td></tr>
+          <tr><td>16:00</td><td>लिखित परीक्षा</td><td>सभी वर्ग</td><td>सभी</td></tr>
+          <tr><td>17:00</td><td>शतरंज</td><td>सभी वर्ग</td><td>सभी</td></tr>
+          <tr><td>18:00</td><td>कला/आर्ट</td><td>बालक/बालिका</td><td>कक्षा 1 से 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="day">
+      <div class="day-title">द्वितीय दिवस कार्यक्रम — 07/11/2026</div>
+      <table>
+        <thead><tr><th>समय</th><th>गतिविधि</th><th>वर्ग</th><th>योग्यता</th></tr></thead>
+        <tbody>
+          <tr><td>07:00</td><td>शू-सॉक्स रेस</td><td>बालक/बालिका</td><td>कक्षा 2 से 5 तक</td></tr>
+          <tr><td>07:20</td><td>नींबू-चम्मच रेस</td><td>बालक/बालिका</td><td>कक्षा 2 से 5 तक</td></tr>
+          <tr><td>07:40</td><td>एनिमेशन गेम</td><td>बालक/बालिका</td><td>कक्षा 6 से 8 तक</td></tr>
+          <tr><td>08:00</td><td>साइकिल स्लो रेस</td><td>बालिका</td><td>Open</td></tr>
+          <tr><td>08:15</td><td>संतुलन खेल</td><td>बालक/बालिका</td><td>कक्षा 1 से 5 तक</td></tr>
+          <tr><td>08:30</td><td>म्यूजिकल चेयर</td><td>बालिका</td><td>Open</td></tr>
+          <tr><td>09:00</td><td>पुरस्कार वितरण</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<section id="details" class="event-details">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">आयोजन विवरण</div>
+      <h2>प्रतियोगिता और आयोजन समिति</h2>
+      <p>कार्यक्रम, आयोजकों, सहयोगियों और स्वयंसेवकों की जानकारी</p>
+    </div>
+
+    <div class="details-grid">
+      <div class="details-poster">
+        <img src="event-details.jpg" alt="आयोजन समिति एवं प्रतियोगिता विवरण">
+      </div>
+      <div class="details-content">
+        <div class="detail-box">
+          <h3>🏅 प्रतियोगिता की विशेषताएं</h3>
+          <ul>
+            <li>बच्चों के लिए शारीरिक और मानसिक खेलकूद</li>
+            <li>सामान्य ज्ञान प्रश्नोत्तरी</li>
+            <li>नवोदय एवं सैनिक स्कूल के लिए विशेष प्रश्नपत्र</li>
+            <li>प्रथम, द्वितीय एवं तृतीय पुरस्कार</li>
+          </ul>
+        </div>
+        <div class="detail-box">
+          <h3>📅 आयोजन</h3>
+          <p><strong>दिनांक:</strong> 06 एवं 07 नवम्बर 2026</p>
+          <p><strong>स्थान:</strong> ग्राम सभा सारीपट्टी</p>
+        </div>
+        <div class="detail-box">
+          <h3>🌟 आयोजन समिति</h3>
+          <p>मुख्य आयोजक, सहयोगी, मार्गदर्शक एवं स्वयंसेवकों की पूरी जानकारी ऊपर दिए गए कार्यक्रम पोस्टर में उपलब्ध है।</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="info">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">हमारा उद्देश्य</div>
+      <h2>खेल से प्रतिभा, प्रतिभा से पहचान</h2>
+      <p>हमारा लक्ष्य बच्चों को स्वस्थ प्रतिस्पर्धा, अनुशासन और आत्मविश्वास का मंच देना है।</p>
+    </div>
+  </div>
+</section>
+
+<section id="register" class="cta">
+  <div class="container">
+    <h2>अपनी प्रतिभा दिखाने के लिए तैयार हैं?</h2>
+    <p>अपना खेल चुनें और प्रतियोगिता के लिए पंजीकरण करें।</p>
+    <a class="btn btn-primary" href="#">🏅 पंजीकरण शुरू करें</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div>
+      <strong>आरव दो दिवसीय खेलकूद एवं सामान्य ज्ञान प्रतियोगिता</strong>
+      <p>खेलें • प्रतिस्पर्धा करें • आगे बढ़ें</p>
+    </div>
+    <div>
+      <a href="#home">होम</a>
+      <a href="#schedule">कार्यक्रम</a>
+      <a href="#register">पंजीकरण</a>
+    </div>
+    <p>© 2026 Sports Management System. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
