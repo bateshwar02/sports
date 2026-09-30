@@ -3,13 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css'
 import Toasts from './components/Toast'
 import Landing from './Landing'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import GameListPage from './pages/GameListPage'
-import UserListPage from './pages/UserListPage'
-import AdminDashboard from './pages/AdminDashboard'
-import VolunteerDashboard from './pages/VolunteerDashboard'
-import UserDashboard from './pages/UserDashboard'
 
 const API_BASE = 'http://localhost:8000/index.php'
 
@@ -179,17 +172,6 @@ function App() {
 		setLoginForm({ username: '', password: '', role: 'user' })
 	}
 
-	// Protected route wrapper
-	const ProtectedRoute = ({ children, requiredRole }) => {
-		if (!session.loggedIn) {
-			return <Navigate to="/" replace />
-		}
-		if (requiredRole && session.role !== requiredRole) {
-			return <Navigate to="/" replace />
-		}
-		return children
-	}
-
 	return (
 		<Router>
 			<div className="app">
@@ -216,49 +198,6 @@ function App() {
 								session.loggedIn ? <Navigate to={`/${session.role}`} replace /> : <Landing loginForm={loginForm} setLoginForm={setLoginForm} handleLogin={handleLogin} registrationForm={registrationForm} setRegistrationForm={setRegistrationForm} handleRegistration={handleRegistration} games={games} addToast={addToast} errors={errors} />
 							}
 						/>
-
-						<Route
-							path="/login"
-							element={session.loggedIn ? <Navigate to={`/${session.role}`} replace /> : <LoginPage loginForm={loginForm} setLoginForm={setLoginForm} handleLogin={handleLogin} errors={errors} addToast={addToast} />}
-						/>
-
-						<Route
-							path="/register"
-							element={
-								session.loggedIn ? <Navigate to={`/${session.role}`} replace /> : <RegisterPage registrationForm={registrationForm} setRegistrationForm={setRegistrationForm} handleRegistration={handleRegistration} games={games} addToast={addToast} errors={errors} />
-							}
-						/>
-
-						<Route path="/games" element={<GameListPage />} />
-						<Route path="/users" element={<UserListPage />} />
-
-						<Route
-							path="/admin"
-							element={
-								<ProtectedRoute requiredRole="admin">
-									<AdminDashboard session={session} addToast={addToast} logout={logout} />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route
-							path="/volunteer"
-							element={
-								<ProtectedRoute requiredRole="volunteer">
-									<VolunteerDashboard session={session} addToast={addToast} logout={logout} />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route
-							path="/user"
-							element={
-								<ProtectedRoute requiredRole="user">
-									<UserDashboard session={session} addToast={addToast} logout={logout} />
-								</ProtectedRoute>
-							}
-						/>
-
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>
 				</main>
