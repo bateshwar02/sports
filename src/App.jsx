@@ -1,211 +1,197 @@
-import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import './App.css'
-import Toasts from './components/Toast'
-import Landing from './Landing'
+import ProtectedRoute from './routes/ProtectedRoute'
 
-const API_BASE = 'http://localhost:8000/index.php'
+// Public Portal Pages
+import LandingPage from './pages/public/LandingPage'
+import PublicRegister from './pages/public/PublicRegister'
+import LoginPage from './pages/public/LoginPage'
+import PublicGames from './pages/public/PublicGames'
+import PublicWinners from './pages/public/PublicWinners'
 
-function App() {
-	const [session, setSession] = useState({
-		loggedIn: false,
-		role: null,
-		name: '',
-	})
+// Admin Suite Pages
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminPlayers from './pages/admin/AdminPlayers'
+import AdminVolunteers from './pages/admin/AdminVolunteers'
+import AdminGames from './pages/admin/AdminGames'
+import AdminClasses from './pages/admin/AdminClasses'
+import AdminWinners from './pages/admin/AdminWinners'
+import AdminReports from './pages/admin/AdminReports'
 
-	const [loginForm, setLoginForm] = useState({
-		username: '',
-		password: '',
-		role: 'user',
-	})
+// Volunteer Desk Pages
+import VolunteerDashboard from './pages/volunteer/VolunteerDashboard'
+import VolunteerPlayers from './pages/volunteer/VolunteerPlayers'
+import VolunteerGames from './pages/volunteer/VolunteerGames'
+import VolunteerClasses from './pages/volunteer/VolunteerClasses'
+import VolunteerWinners from './pages/volunteer/VolunteerWinners'
 
-	const [registrationForm, setRegistrationForm] = useState({
-		gameId: '1',
-		name: '',
-		fatherName: '',
-		village: '',
-		image: '',
-		aadhaar: '',
-	})
+// Player Hub Pages
+import PlayerDashboard from './pages/player/PlayerDashboard'
+import PlayerProfile from './pages/player/PlayerProfile'
+import PlayerRegistration from './pages/player/PlayerRegistration'
+import PlayerResults from './pages/player/PlayerResults'
 
-	const [games, setGames] = useState([])
-	const [toasts, setToasts] = useState([])
-	const [errors, setErrors] = useState({
-		login: {},
-		registration: {},
-		game: {},
-		user: {},
-		volunteer: {},
-		award: {},
-	})
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* ===============================================================
+            1. Public Portal (Blueprint Section 12)
+            /, /register, /login, /games, /winners
+            =============================================================== */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<PublicRegister />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/games" element={<PublicGames />} />
+        <Route path="/winners" element={<PublicWinners />} />
 
-	// Load games for landing/register pages
-	useEffect(() => {
-		loadGames()
-	}, [])
+        {/* ===============================================================
+            2. Admin Suite (Blueprint Section 12: Role Admin Only)
+            /admin/dashboard, /admin/players, /admin/volunteers, /admin/games,
+            /admin/classes, /admin/winners, /admin/reports
+            =============================================================== */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/players"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminPlayers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/volunteers"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminVolunteers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/games"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminGames />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/classes"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminClasses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/winners"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminWinners />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminReports />
+            </ProtectedRoute>
+          }
+        />
 
-	const loadGames = async () => {
-		try {
-			const res = await fetch(API_BASE, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ action: 'list-games' }),
-			}).then((r) => r.json())
+        {/* ===============================================================
+            3. Volunteer Desk (Blueprint Section 12: Role Volunteer Only)
+            /volunteer/dashboard, /volunteer/players, /volunteer/games,
+            /volunteer/classes, /volunteer/winners
+            =============================================================== */}
+        <Route
+          path="/volunteer/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['volunteer', 'admin']}>
+              <VolunteerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/volunteer/players"
+          element={
+            <ProtectedRoute allowedRoles={['volunteer', 'admin']}>
+              <VolunteerPlayers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/volunteer/games"
+          element={
+            <ProtectedRoute allowedRoles={['volunteer', 'admin']}>
+              <VolunteerGames />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/volunteer/classes"
+          element={
+            <ProtectedRoute allowedRoles={['volunteer', 'admin']}>
+              <VolunteerClasses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/volunteer/winners"
+          element={
+            <ProtectedRoute allowedRoles={['volunteer', 'admin']}>
+              <VolunteerWinners />
+            </ProtectedRoute>
+          }
+        />
 
-			if (res?.success && Array.isArray(res.games)) {
-				setGames(res.games.map((x) => ({ id: Number(x.id), name: x.name, description: x.description })))
-				if (res.games.length > 0 && registrationForm.gameId === '1') {
-					setRegistrationForm((prev) => ({ ...prev, gameId: String(res.games[0].id) }))
-				}
-			}
-		} catch (error) {
-			console.error('Load games error', error)
-		}
-	}
+        {/* ===============================================================
+            4. Player Hub (Blueprint Section 12: Role Authenticated Player)
+            /player/dashboard, /player/profile, /player/registration, /player/results
+            =============================================================== */}
+        <Route
+          path="/player/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['player', 'admin', 'volunteer']}>
+              <PlayerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/player/profile"
+          element={
+            <ProtectedRoute allowedRoles={['player', 'admin', 'volunteer']}>
+              <PlayerProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/player/registration"
+          element={
+            <ProtectedRoute allowedRoles={['player', 'admin', 'volunteer']}>
+              <PlayerRegistration />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/player/results"
+          element={
+            <ProtectedRoute allowedRoles={['player', 'admin', 'volunteer']}>
+              <PlayerResults />
+            </ProtectedRoute>
+          }
+        />
 
-	const addToast = (message, type = 'success') => {
-		const id = Date.now() + Math.floor(Math.random() * 1000)
-		setToasts((c) => [...c, { id, message, type }])
-	}
-
-	const removeToast = (id) => setToasts((c) => c.filter((t) => t.id !== id))
-
-	const setFieldError = (form, field, msg) => {
-		setErrors((e) => ({ ...e, [form]: { ...(e[form] || {}), [field]: msg } }))
-	}
-
-	const clearFormErrors = (form) => {
-		setErrors((e) => ({ ...e, [form]: {} }))
-	}
-
-	const handleLogin = async (event) => {
-		event.preventDefault()
-		clearFormErrors('login')
-
-		if (!loginForm.username?.trim()) {
-			setFieldError('login', 'username', 'Username required')
-			return
-		}
-		if (!loginForm.password) {
-			setFieldError('login', 'password', 'Password required')
-			return
-		}
-
-		try {
-			const response = await fetch(API_BASE, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ action: 'login', ...loginForm }),
-			})
-			const data = await response.json()
-
-			if (data.success) {
-				setSession({ loggedIn: true, role: data.user.role, name: data.user.name })
-				addToast('Logged in successfully', 'success')
-				clearFormErrors('login')
-			} else {
-				setFieldError('login', 'general', data.message || 'Invalid username or password')
-			}
-		} catch (error) {
-			console.error('Login error', error)
-			setFieldError('login', 'general', 'Login failed')
-		}
-	}
-
-	const handleRegistration = async (event) => {
-		event.preventDefault()
-		clearFormErrors('registration')
-
-		// Validate
-		if (!registrationForm.name.trim()) {
-			setFieldError('registration', 'name', 'Name is required')
-			return
-		}
-		if (!registrationForm.fatherName.trim()) {
-			setFieldError('registration', 'fatherName', 'Father name is required')
-			return
-		}
-		if (!registrationForm.village.trim()) {
-			setFieldError('registration', 'village', 'Village is required')
-			return
-		}
-		if (!registrationForm.aadhaar.trim()) {
-			setFieldError('registration', 'aadhaar', 'Aadhaar is required')
-			return
-		}
-
-		const payload = {
-			...registrationForm,
-			gameId: Number(registrationForm.gameId),
-			image: registrationForm.image || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80',
-		}
-
-		try {
-			const res = await fetch(API_BASE, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ action: 'register', participant: payload }),
-			}).then((r) => r.json())
-
-			if (res?.success) {
-				addToast('Registration submitted successfully', 'success')
-				setRegistrationForm({
-					gameId: registrationForm.gameId,
-					name: '',
-					fatherName: '',
-					village: '',
-					image: '',
-					aadhaar: '',
-					aadhaarImage: '',
-				})
-			} else {
-				addToast(res?.message || 'Registration failed', 'error')
-			}
-		} catch (error) {
-			addToast('Registration failed', 'error')
-			console.error('Registration save failed', error)
-		}
-	}
-
-	const logout = () => {
-		setSession({ loggedIn: false, role: null, name: '' })
-		setLoginForm({ username: '', password: '', role: 'user' })
-	}
-
-	return (
-		<Router>
-			<div className="app">
-				{session.loggedIn && (
-					<header className="topbar">
-						<div>
-							<span className="eyebrow">Sports Management</span>
-							<h1>Dashboard</h1>
-						</div>
-						<div className="topbar-actions">
-							<span className="role-pill">{session.role}</span>
-							<button type="button" className="ghost-btn" onClick={logout}>
-								Logout
-							</button>
-						</div>
-					</header>
-				)}
-
-				<main className="app-shell">
-					<Routes>
-						<Route
-							path="/"
-							element={
-								session.loggedIn ? <Navigate to={`/${session.role}`} replace /> : <Landing loginForm={loginForm} setLoginForm={setLoginForm} handleLogin={handleLogin} registrationForm={registrationForm} setRegistrationForm={setRegistrationForm} handleRegistration={handleRegistration} games={games} addToast={addToast} errors={errors} />
-							}
-						/>
-						<Route path="*" element={<Navigate to="/" replace />} />
-					</Routes>
-				</main>
-
-				<Toasts toasts={toasts} removeToast={removeToast} />
-			</div>
-		</Router>
-	)
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  )
 }
-
-export default App
