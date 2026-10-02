@@ -1401,6 +1401,140 @@ img {
   }
 }
 
+/* ================================
+   Header Responsive Navigation
+================================ */
+
+.mobile-menu-button {
+  display: none;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+  color: var(--slate-700);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+
+  .desktop-nav {
+    gap: 3px !important;
+  }
+
+  .desktop-nav .btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 0.85rem;
+  }
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    padding: 12px 20px 18px;
+
+    background: #ffffff;
+    border-top: 1px solid var(--slate-200);
+
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-nav a,
+  .mobile-nav button {
+    width: 100%;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    border: none;
+    background: transparent;
+
+    color: var(--slate-700);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    text-decoration: none;
+    text-align: left;
+
+    cursor: pointer;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav button:hover {
+    background: var(--slate-100);
+  }
+
+  .mobile-nav a.active {
+    background: var(--slate-100);
+    color: var(--purple-600);
+  }
+
+  .mobile-nav .mobile-register {
+    background: var(--purple-600);
+    color: #ffffff;
+    justify-content: center;
+    margin-top: 4px;
+  }
+
+  .mobile-nav .mobile-register:hover {
+    background: var(--purple-700);
+  }
+}
+
+
+/* Small phones */
+@media (max-width: 480px) {
+
+  header > div {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .mobile-nav {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  header a > div:nth-child(2) > div:first-child {
+    font-size: 0.95rem !important;
+  }
+
+  header a > div:nth-child(2) > div:last-child {
+    font-size: 0.58rem !important;
+  }
+
+}
+
 @media (max-width: 640px) {
   .landing-hero-section {
     padding-top: 30px;
