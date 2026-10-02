@@ -734,7 +734,7 @@ h1, h2, h3, h4, h5, h6 {
 
   /* Show the dropdown menu only when the .open class is attached via React */
   .nav-menu.open {
-    display: flex;
+    display: flex !important;
   }
 
   .nav-menu a {
