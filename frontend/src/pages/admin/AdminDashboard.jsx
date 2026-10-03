@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, Clock, CheckCircle2, Trophy, UserCheck, Calendar, Award, ArrowUpRight, Plus, Shield } from 'lucide-react'
+import { Users, Clock, CheckCircle2, Trophy, UserCheck, Calendar, Award, ArrowUpRight, Plus } from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import { api } from '../../services/api'
 import Badge from '../../components/Badge'
@@ -20,38 +20,42 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function loadMetrics() {
-      const pRes = await api.getPlayers()
-      const players = pRes?.data?.players || []
+      try {
+        const pRes = await api.getPlayers()
+        const players = pRes?.data?.players || []
 
-      const gRes = await api.getGames()
-      const games = gRes?.data || []
+        const gRes = await api.getGames()
+        const games = gRes?.data || []
 
-      const vRes = await api.getVolunteers()
-      const volunteers = vRes?.data || []
+        const vRes = await api.getVolunteers()
+        const volunteers = vRes?.data || []
 
-      const wRes = await api.getWinners()
-      const winners = wRes?.data || []
+        const wRes = await api.getWinners()
+        const winners = wRes?.data || []
 
-      const pending = players.filter((p) => p.status === 'Pending').length
-      const verified = players.filter((p) => p.status === 'Approved').length
-      const activeVol = volunteers.filter((v) => v.status === 'active').length
+        const pending = players.filter((p) => p.status === 'Pending').length
+        const verified = players.filter((p) => p.status === 'Approved').length
+        const activeVol = volunteers.filter((v) => v.status === 'active').length
 
-      let totalSlotsCount = 0
-      games.forEach((g) => {
-        if (g.slots) totalSlotsCount += g.slots.length
-      })
+        let totalSlotsCount = 0
+        games.forEach((g) => {
+          if (g.slots) totalSlotsCount += g.slots.length
+        })
 
-      setMetrics({
-        totalPlayers: players.length,
-        pendingQueue: pending,
-        verifiedAthletes: verified,
-        totalGames: games.length,
-        activeVolunteers: activeVol,
-        publishedWinners: winners.length,
-        availableSlots: totalSlotsCount
-      })
+        setMetrics({
+          totalPlayers: players.length,
+          pendingQueue: pending,
+          verifiedAthletes: verified,
+          totalGames: games.length,
+          activeVolunteers: activeVol,
+          publishedWinners: winners.length,
+          availableSlots: totalSlotsCount
+        })
 
-      setRecentPlayers(players.slice(0, 5))
+        setRecentPlayers(players.slice(0, 5))
+      } catch (err) {
+        console.error('Failed to load dashboard metrics:', err)
+      }
     }
     loadMetrics()
   }, [])
@@ -62,8 +66,16 @@ export default function AdminDashboard() {
       title="कार्यकारी प्रशासनिक डैशबोर्ड (Executive Dashboard)"
       subtitle="रियल-टाइम टूर्नामेंट मेट्रिक्स, सत्यापन कतार एवं समग्र नियंत्रण"
     >
-      {/* 7 Core Executive Metrics per Blueprint Section 4.1 */}
-      <div className="metric-grid">
+      {/* 1. Responsive Metrics Grid */}
+      <div
+        className="metric-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '16px',
+          marginBottom: '24px'
+        }}
+      >
         <div className="metric-card">
           <div className="metric-icon-wrap metric-purple">
             <Users size={24} />
@@ -139,78 +151,117 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Quick Action Bar */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
-        <Link to="/admin/players" className="btn btn-primary">
+      {/* 2. Responsive Quick Actions Bar */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '12px',
+          marginBottom: '28px',
+          flexWrap: 'wrap'
+        }}
+      >
+        <Link to="/admin/players" className="btn btn-primary" style={{ flex: '1 1 220px', justifyContent: 'center' }}>
           <Users size={16} /> खिलाड़ी सत्यापन कतार ({metrics.pendingQueue})
         </Link>
-        <Link to="/admin/games" className="btn btn-secondary">
+        <Link to="/admin/games" className="btn btn-secondary" style={{ flex: '1 1 200px', justifyContent: 'center' }}>
           <Plus size={16} /> नई प्रतियोगिता जोड़ें (Add Game)
         </Link>
-        <Link to="/admin/winners" className="btn btn-secondary">
+        <Link to="/admin/winners" className="btn btn-secondary" style={{ flex: '1 1 220px', justifyContent: 'center' }}>
           <Award size={16} /> विजेता मैपिंग इंजन (Winner Mapping)
         </Link>
-        <Link to="/admin/volunteers" className="btn btn-outline">
+        <Link to="/admin/volunteers" className="btn btn-outline" style={{ flex: '1 1 200px', justifyContent: 'center' }}>
           <UserCheck size={16} /> स्वयंसेवक स्टाफिंग (Staffing)
         </Link>
       </div>
 
-      {/* Recent Athlete Submissions */}
-      <div style={{ background: '#ffffff', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-card)', padding: '24px', boxShadow: 'var(--shadow-card)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+      {/* 3. Recent Submissions Section */}
+      <div
+        style={{
+          background: '#ffffff',
+          borderRadius: 'var(--radius-lg, 12px)',
+          border: '1px solid var(--border-card, #e2e8f0)',
+          padding: 'clamp(16px, 3vw, 24px)',
+          boxShadow: 'var(--shadow-card, 0 1px 3px rgba(0,0,0,0.1))'
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '18px'
+          }}
+        >
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--slate-900)' }}>
+            <h3 style={{ margin: 0, fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'var(--slate-900, #0f172a)' }}>
               हाल ही में प्राप्त खिलाड़ी आवेदन (Recent Athlete Registrations)
             </h3>
-            <span style={{ fontSize: '0.82rem', color: 'var(--slate-500)' }}>
-              आधार एवं फोटो सत्यापन हेतु लंबित आवेदनों की त्वरित समीक्षा
+            <span style={{ fontSize: '0.82rem', color: 'var(--slate-500, #64748b)', display: 'block', marginTop: '4px' }}>
+              पहचान एवं फोटो सत्यापन हेतु लंबित आवेदनों की त्वरित समीक्षा
             </span>
           </div>
-          <Link to="/admin/players" className="btn btn-outline btn-sm">
+          <Link to="/admin/players" className="btn btn-outline btn-sm" style={{ whiteSpace: 'nowrap' }}>
             सभी खिलाड़ी देखें <ArrowUpRight size={14} />
           </Link>
         </div>
 
-        <div style={{ overflowX: 'auto' }}>
-          <table className="datatable-table">
+        {/* Responsive Table Wrapper */}
+        <div
+          style={{
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            margin: '0 -4px'
+          }}
+        >
+          <table className="datatable-table" style={{ width: '100%', minWidth: '650px', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th>खिलाड़ी</th>
-                <th>पिता का नाम</th>
-                <th>प्रतियोगिता</th>
-                <th>ग्राम</th>
-                <th>मोबाइल</th>
-                <th>स्थिति (Status)</th>
-                <th>क्रिया (Action)</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>खिलाड़ी</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>पिता का नाम</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>प्रतियोगिता</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>ग्राम</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>मोबाइल</th>
+                <th style={{ textAlign: 'left', padding: '10px 12px' }}>स्थिति (Status)</th>
+                <th style={{ textAlign: 'center', padding: '10px 12px' }}>क्रिया (Action)</th>
               </tr>
             </thead>
             <tbody>
-              {recentPlayers.map((p) => (
-                <tr key={p.id}>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <img
-                        src={p.image_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'}
-                        alt={p.name}
-                        style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
-                      />
-                      <strong>{p.name}</strong>
-                    </div>
-                  </td>
-                  <td>{p.father_name}</td>
-                  <td>{p.game_name}</td>
-                  <td>{p.village}</td>
-                  <td>{p.mobile}</td>
-                  <td>
-                    <Badge status={p.status} />
-                  </td>
-                  <td>
-                    <Link to="/admin/players" className="btn btn-outline btn-sm">
-                      समीक्षा करें
-                    </Link>
+              {recentPlayers.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '24px', color: 'var(--slate-500, #64748b)' }}>
+                    कोई नया आवेदन उपलब्ध नहीं है
                   </td>
                 </tr>
-              ))}
+              ) : (
+                recentPlayers.map((p) => (
+                  <tr key={p.id}>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <img
+                          src={p.image_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'}
+                          alt={p.name}
+                          style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                        />
+                        <strong style={{ fontSize: '0.9rem' }}>{p.name}</strong>
+                      </div>
+                    </td>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{p.father_name}</td>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{p.game_name}</td>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{p.village}</td>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{p.mobile}</td>
+                    <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                      <Badge status={p.status} />
+                    </td>
+                    <td style={{ padding: '10px 12px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                      <Link to="/admin/players" className="btn btn-outline btn-sm">
+                        समीक्षा करें
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Plus, Clock, Users, MapPin, Calendar, Settings, List, Edit2, CheckCircle2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Plus, Clock, Users} from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import DataTable from '../../components/DataTable'
 import Modal from '../../components/Modal'
-import Badge from '../../components/Badge'
 import { api } from '../../services/api'
 
 export default function AdminGames() {
@@ -33,14 +32,16 @@ export default function AdminGames() {
 
   const loadData = async () => {
     const gRes = await api.getGames()
-    if (gRes.success) setGames(gRes.data || [])
+    if (gRes?.success) setGames(gRes.data || [])
 
     const pRes = await api.getPlayers()
-    if (pRes.success) setPlayers(pRes.data.players || [])
+    if (pRes?.success) setPlayers(pRes.data.players || [])
   }
 
   useEffect(() => {
-    loadData()
+    (async () => {
+      await loadData()
+    })()
   }, [])
 
   const handleCreateGame = async (e) => {

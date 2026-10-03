@@ -1,10 +1,10 @@
-import React from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { api } from '../services/api'
 
 export default function ProtectedRoute({ allowedRoles = [], children }) {
   const location = useLocation()
-  const user = api.getCurrentUser()
+  const user = api.getCurrentUser();
+
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />

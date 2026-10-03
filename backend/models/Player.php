@@ -17,22 +17,22 @@ class Player {
                 WHERE 1=1";
         $params = [];
 
-        if (!empty($filters['game_id'])) {
+        if (!empty($filters['game_id']) && $filters['game_id'] !== 'all') {
             $sql .= " AND p.game_id = :game_id";
             $params['game_id'] = $filters['game_id'];
         }
 
-        if (!empty($filters['class_id'])) {
+        if (!empty($filters['class_id']) && $filters['class_id'] !== 'all') {
             $sql .= " AND p.class_id = :class_id";
             $params['class_id'] = $filters['class_id'];
         }
 
-        if (!empty($filters['status'])) {
+        if (!empty($filters['status']) && $filters['status'] !== 'all') {
             $sql .= " AND p.status = :status";
             $params['status'] = $filters['status'];
         }
 
-        if (!empty($filters['search'])) {
+        if (!empty($filters['search']) && $filters['search'] !== 'all') {
             $sql .= " AND (p.name LIKE :search OR p.village LIKE :search OR p.mobile LIKE :search OR p.father_name LIKE :search)";
             $params['search'] = '%' . $filters['search'] . '%';
         }

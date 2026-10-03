@@ -20,12 +20,12 @@ export default function LoginPage() {
     const res = await api.login(username, password)
     setLoading(false)
 
-    if (res.success) {
+    if (res?.success) {
       const role = res.data.user.role
       const from = location.state?.from?.pathname || `/${role}/dashboard`
       navigate(from, { replace: true })
     } else {
-      setError(res.message || 'लॉगिन असफल रहा (Login failed)')
+      setError(res?.message || 'लॉगिन असफल रहा (Login failed)')
     }
   }
 

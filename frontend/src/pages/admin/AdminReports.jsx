@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import { Printer, Download, FileText, CheckCircle2, Users, Trophy } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Printer } from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import { api } from '../../services/api'
 
 export default function AdminReports() {
   const [players, setPlayers] = useState([])
   const [games, setGames] = useState([])
-  const [winners, setWinners] = useState([])
 
   useEffect(() => {
     async function load() {
       const pRes = await api.getPlayers()
-      if (pRes.success) setPlayers(pRes.data.players || [])
+      if (pRes?.success) setPlayers(pRes.data.players || [])
 
       const gRes = await api.getGames()
-      if (gRes.success) setGames(gRes.data || [])
-
-      const wRes = await api.getWinners()
-      if (wRes.success) setWinners(wRes.data || [])
+      if (gRes?.success) setGames(gRes.data || [])
     }
     load()
   }, [])

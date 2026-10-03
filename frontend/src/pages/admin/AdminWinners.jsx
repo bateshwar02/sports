@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Trophy, Award, Plus, Trash2, Printer, Eye, CheckCircle2 } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Plus, Trash2, Printer } from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import DataTable from '../../components/DataTable'
 import Modal from '../../components/Modal'
@@ -22,31 +22,31 @@ export default function AdminWinners() {
     remarks: ''
   })
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const wRes = await api.getWinners()
-    if (wRes.success) setWinners(wRes.data || [])
+    if (wRes?.success) setWinners(wRes.data || [])
 
     const gRes = await api.getGames()
-    if (gRes.success) {
+    if (gRes?.success) {
       setGames(gRes.data || [])
-      if (gRes.data?.length > 0 && !mapForm.game_id) {
-        setMapForm((prev) => ({ ...prev, game_id: String(gRes.data[0].id) }))
+      if (gRes.data?.length > 0) {
+        setMapForm((prev) => prev.game_id ? prev : { ...prev, game_id: String(gRes.data[0].id) })
       }
     }
 
     const pRes = await api.getPlayers({ status: 'Approved' })
-    if (pRes.success) {
+    if (pRes?.success) {
       const verified = (pRes.data.players || []).filter((p) => p.status === 'Approved')
       setApprovedPlayers(verified)
-      if (verified.length > 0 && !mapForm.player_id) {
-        setMapForm((prev) => ({ ...prev, player_id: String(verified[0].id) }))
+      if (verified.length > 0) {
+        setMapForm((prev) => prev.player_id ? prev : { ...prev, player_id: String(verified[0].id) })
       }
     }
-  }
+  }, [])
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [loadData])
 
   const handleSaveMapping = async (e) => {
     e.preventDefault()
@@ -136,7 +136,7 @@ export default function AdminWinners() {
     },
     {
       header: 'सार्वजनिक स्थिति (Publish State)',
-      accessor: (row) => 'प्रकाशित (Live)',
+      accessor: () => 'प्रकाशित (Live)',
       render: () => <span className="badge-pill badge-approved">प्रकाशित (Live)</span>
     },
     {

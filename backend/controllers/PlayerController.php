@@ -40,48 +40,118 @@ class PlayerController {
         ], 'Player list retrieved successfully');
     }
 
+    // public static function store() {
+    //     // Public or Admin registration
+    //     $data = Validator::sanitize($_POST);
+    //     $errors = Validator::validateRegistration($data);
+
+    //     // Upload Profile Photo if present
+    //     $imageUrl = null;
+    //       error_log("Uploading profile photo. File name: " . $_FILES['image']['name']);
+    //     if (!empty($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
+          
+    //         $imgUpload = FileUploader::upload($_FILES['image_url'], 'players');
+    //         if ($imgUpload['success']) {
+    //             $imageUrl = $imgUpload['url'];
+    //         } else {
+    //             $errors['image'] = $imgUpload['error'];
+    //         }
+    //     }
+
+    //     // Upload Aadhaar document if present
+    //     $aadhaarUrl = null;
+    //     if (!empty($_FILES['aadhaar_url']) && $_FILES['aadhaar_url']['error'] === UPLOAD_ERR_OK) {
+    //         error_log("PlayerController::index() - Uploading Aadhaar document. File name: " . $_FILES['aadhaar_url']['name']);
+    //         $aadhaarUpload = FileUploader::upload($_FILES['aadhaar_url'], 'aadhaar');
+    //         if ($aadhaarUpload['success']) {
+    //             $aadhaarUrl = $aadhaarUpload['url'];
+    //         } else {
+    //             $errors['aadhaar_file'] = $aadhaarUpload['error'];
+    //         }
+    //     }
+
+    //     if (!empty($errors)) {
+    //         ResponseFormatter::validationError($errors, "Form validation failed on " . count($errors) . " fields");
+    //     }
+
+    //     error_log("PlayerController::index() - image url " . $imageUrl . "  adhaar url " . $aadhaarUrl);
+
+    //     $data['image_url'] = $imageUrl ?: ($data['image_url'] ?? null);
+    //     $data['aadhaar_url'] = $aadhaarUrl ?: ($data['aadhaar_url'] ?? null);
+
+    //     $playerId = Player::create($data);
+
+    //     ResponseFormatter::success([
+    //         'playerId' => $playerId,
+    //         'status' => 'Pending',
+    //         'message' => 'Your registration has been submitted and is pending verification by field volunteers.'
+    //     ], 'Player registered successfully', 201);
+    // }
+
     public static function store() {
-        // Public or Admin registration
-        $data = Validator::sanitize($_POST);
-        $errors = Validator::validateRegistration($data);
+    $data = Validator::sanitize($_POST);
+    $errors = Validator::validateRegistration($data);
 
-        // Upload Profile Photo if present
-        $imageUrl = null;
-        if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $imgUpload = FileUploader::upload($_FILES['image'], 'players');
-            if ($imgUpload['success']) {
-                $imageUrl = $imgUpload['url'];
-            } else {
-                $errors['image'] = $imgUpload['error'];
-            }
+    // ----------------------------------------------------
+    // 1. Process Profile Image
+    // ----------------------------------------------------
+    $imageUrl = null;
+    if (!empty($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
+        // Binary upload via $_FILES
+        $imgUpload = FileUploader::upload($_FILES['image_url'], 'players');
+        if ($imgUpload['success']) {
+            $imageUrl = $imgUpload['url'];
+        } else {
+            $errors['image'] = $imgUpload['error'];
         }
-
-        // Upload Aadhaar document if present
-        $aadhaarUrl = null;
-        if (!empty($_FILES['aadhaar']) && $_FILES['aadhaar']['error'] === UPLOAD_ERR_OK) {
-            $aadhaarUpload = FileUploader::upload($_FILES['aadhaar'], 'aadhaar');
-            if ($aadhaarUpload['success']) {
-                $aadhaarUrl = $aadhaarUpload['url'];
-            } else {
-                $errors['aadhaar_file'] = $aadhaarUpload['error'];
-            }
+    } elseif (!empty($_POST['image_url']) && str_starts_with($_POST['image_url'], 'data:image/')) {
+        // Base64 payload via $_POST
+        $imgUpload = FileUploader::uploadBase64($_POST['image_url'], 'players');
+        if ($imgUpload['success']) {
+            $imageUrl = $imgUpload['url'];
+        } else {
+            $errors['image'] = $imgUpload['error'];
         }
-
-        if (!empty($errors)) {
-            ResponseFormatter::validationError($errors, "Form validation failed on " . count($errors) . " fields");
-        }
-
-        $data['image_url'] = $imageUrl ?: ($data['image_url'] ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80');
-        $data['aadhaar_url'] = $aadhaarUrl ?: ($data['aadhaar_url'] ?? null);
-
-        $playerId = Player::create($data);
-
-        ResponseFormatter::success([
-            'playerId' => $playerId,
-            'status' => 'Pending',
-            'message' => 'Your registration has been submitted and is pending verification by field volunteers.'
-        ], 'Player registered successfully', 201);
     }
+
+    // ----------------------------------------------------
+    // 2. Process Document Image
+    // ----------------------------------------------------
+    $aadhaarUrl = null;
+    if (!empty($_FILES['aadhaar_url']) && $_FILES['aadhaar_url']['error'] === UPLOAD_ERR_OK) {
+        // Binary upload via $_FILES
+        $docUpload = FileUploader::upload($_FILES['aadhaar_url'], 'aadhaar');
+        if ($docUpload['success']) {
+            $aadhaarUrl = $docUpload['url'];
+        } else {
+            $errors['aadhaar_file'] = $docUpload['error'];
+        }
+    } elseif (!empty($_POST['aadhaar_url']) && str_starts_with($_POST['aadhaar_url'], 'data:image/')) {
+        // Base64 payload via $_POST
+        $docUpload = FileUploader::uploadBase64($_POST['aadhaar_url'], 'aadhaar');
+        if ($docUpload['success']) {
+            $aadhaarUrl = $docUpload['url'];
+        } else {
+            $errors['aadhaar_file'] = $docUpload['error'];
+        }
+    }
+
+    if (!empty($errors)) {
+        ResponseFormatter::validationError($errors, "Form validation failed on " . count($errors) . " fields");
+    }
+
+    // Assign saved relative file paths (e.g., /uploads/players/abc123.jpg)
+    $data['image_url']   = $imageUrl ?? ($data['image_url'] ?? null);
+    $data['aadhaar_url'] = $aadhaarUrl ?? ($data['aadhaar_url'] ?? null);
+
+    $playerId = Player::create($data);
+
+    ResponseFormatter::success([
+        'playerId' => $playerId,
+        'status'   => 'Pending',
+        'message'  => 'Your registration has been submitted and is pending verification by field volunteers.'
+    ], 'Player registered successfully', 201);
+}
 
     public static function approve(int $id) {
         RoleGuard::volunteerOrAdmin();
@@ -155,5 +225,36 @@ class PlayerController {
             'playerId' => $id,
             'isPresent' => $isPresent
         ], 'Player court presence updated');
+    }
+
+    public static function getAadhaarUrl(int $id) {
+        RoleGuard::volunteerOrAdmin();
+        $player = Player::findById($id);
+        if (!$player) {
+            ResponseFormatter::error('Player record not found', 404);
+        }
+       
+        if (!$player['aadhaar_url']) {
+            ResponseFormatter::error('Aadhaar document not found for this player', 404);
+        }
+
+        $filename = basename($player['aadhaar_url']);
+        $file = __DIR__ . '/../uploads/aadhaar/' . $filename;
+        if (!file_exists($file) || !is_file($file)) {
+            ResponseFormatter::error('Aadhaar document file not found on server', 404);
+        }
+
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($file);
+
+        header('Content-Type: ' . $mimeType);
+        header('Content-Length: ' . filesize($file));
+        header('Content-Disposition: inline; filename="' . basename($file) . '"');
+        header('Cache-Control: private, no-store, no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('X-Content-Type-Options: nosniff');
+
+        readfile($file);
+        exit;
     }
 }

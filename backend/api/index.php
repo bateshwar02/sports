@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RESTful API Route Dispatcher
  * Blueprint Section 1, 2, 8
@@ -60,6 +61,11 @@ try {
         PlayerController::toggleCheckIn((int)$m[1]);
         exit();
     }
+
+    if (preg_match('#^/api/players/([0-9]+)/aadhaar$#', $path, $matches) && $requestMethod === 'GET') {
+        PlayerController::getAadhaarUrl((int)$matches[1]);
+        exit();
+        }
 
     // Game routes
     if ($path === '/api/games') {
@@ -133,7 +139,6 @@ try {
 
     // Route not found
     ResponseFormatter::error("Endpoint not found: {$requestMethod} {$path}", 404);
-
 } catch (Throwable $e) {
     ResponseFormatter::error("Internal Server Error: " . $e->getMessage(), 500);
 }

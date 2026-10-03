@@ -86,7 +86,7 @@ export default function LandingPage() {
             maxWidth: "1280px",
             margin: "0 auto",
             display: "grid",
-            gridTemplateColumns: "1.2fr 0.8fr",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
             gap: "40px",
             alignItems: "center",
             position: "relative",

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { UserCheck, Plus, Edit, ToggleLeft, ToggleRight, Trash2, MapPin, Phone, Mail } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Plus, MapPin } from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import DataTable from '../../components/DataTable'
 import Badge from '../../components/Badge'
@@ -26,14 +26,18 @@ export default function AdminVolunteers() {
     district: ''
   })
 
-  const loadVolunteers = async () => {
-    const res = await api.getVolunteers()
-    if (res.success) setVolunteers(res.data || [])
-  }
-
   useEffect(() => {
+    const loadVolunteers = async () => {
+      const res = await api.getVolunteers()
+      if (res?.success) setVolunteers(res.data || [])
+    }
     loadVolunteers()
   }, [])
+
+  const loadVolunteers = async () => {
+    const res = await api.getVolunteers()
+    if (res?.success) setVolunteers(res.data || [])
+  }
 
   const handleToggleStatus = async (id, currentStatus) => {
     const nextStatus = currentStatus === 'active' ? 'inactive' : 'active'

@@ -1,4 +1,3 @@
-import React from 'react'
 
 export default function Badge({ status, text }) {
   const s = String(status || '').toLowerCase()
