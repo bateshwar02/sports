@@ -899,3 +899,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: 20px 16px;
   }
 }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}

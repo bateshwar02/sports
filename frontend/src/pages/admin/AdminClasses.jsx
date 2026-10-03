@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Plus, Layers, Edit2, CheckCircle2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Plus } from 'lucide-react'
 import PortalLayout from '../../layouts/PortalLayout'
 import DataTable from '../../components/DataTable'
 import Modal from '../../components/Modal'
@@ -15,14 +15,18 @@ export default function AdminClasses() {
     description: ''
   })
 
-  const loadClasses = async () => {
-    const res = await api.getClasses()
-    if (res.success) setClasses(res.data || [])
-  }
-
   useEffect(() => {
+    const loadClasses = async () => {
+      const res = await api.getClasses()
+      if (res?.success) setClasses(res.data || [])
+    }
     loadClasses()
   }, [])
+
+  const loadClasses = async () => {
+    const res = await api.getClasses()
+    if (res?.success) setClasses(res.data || [])
+  }
 
   const handleAdd = async (e) => {
     e.preventDefault()

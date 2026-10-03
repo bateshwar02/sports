@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { User, Shield, MapPin, Phone, Calendar, Upload, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react'
 import Navbar from '../../layouts/Navbar'
 import { api } from '../../services/api'
 
 export default function PublicRegister() {
-  const navigate = useNavigate()
   const [games, setGames] = useState([])
   const [classes, setClasses] = useState([])
   const [loading, setLoading] = useState(false)
@@ -32,7 +31,7 @@ export default function PublicRegister() {
   useEffect(() => {
     async function loadOptions() {
       const gRes = await api.getGames()
-      if (gRes.success && gRes.data) {
+      if (gRes?.success && gRes?.data) {
         setGames(gRes.data)
         if (gRes.data.length > 0) {
           setFormData((prev) => ({ ...prev, game_id: String(gRes.data[0].id) }))
@@ -40,7 +39,7 @@ export default function PublicRegister() {
       }
 
       const cRes = await api.getClasses()
-      if (cRes.success && cRes.data) {
+      if (cRes?.success && cRes?.data) {
         setClasses(cRes.data)
         if (cRes.data.length > 0) {
           setFormData((prev) => ({ ...prev, class_id: String(cRes.data[0].id) }))
@@ -99,14 +98,14 @@ export default function PublicRegister() {
     const res = await api.registerPlayer(formData)
     setLoading(false)
 
-    if (res.success) {
+    if (res?.success) {
       setSubmitted(res.data)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      if (res.errors) {
+      if (res?.errors) {
         setErrors(res.errors)
       } else {
-        setErrors({ general: res.message || 'पंजीकरण विफल रहा' })
+        setErrors({ general: res?.message || 'पंजीकरण विफल रहा' })
       }
     }
   }
@@ -212,7 +211,7 @@ export default function PublicRegister() {
             )}
 
             <form onSubmit={handleSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '18px' }}>
                 {/* Full Name */}
                 <div className="form-group">
                   <label className="form-label">
@@ -248,7 +247,7 @@ export default function PublicRegister() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '18px' }}>
                 {/* Game Select (Dynamic from DB) */}
                 <div className="form-group">
                   <label className="form-label">
@@ -292,7 +291,7 @@ export default function PublicRegister() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '18px' }}>
                 {/* Mobile */}
                 <div className="form-group">
                   <label className="form-label">
@@ -329,7 +328,7 @@ export default function PublicRegister() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '18px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '18px' }}>
                 {/* DOB */}
                 <div className="form-group">
                   <label className="form-label">
@@ -383,7 +382,7 @@ export default function PublicRegister() {
               </div>
 
               {/* Photo & Aadhaar Uploads */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', marginTop: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '18px', marginTop: '10px' }}>
                 <div className="form-group" style={{ border: '1px dashed var(--slate-300)', padding: '16px', borderRadius: '10px', textAlign: 'center' }}>
                   <label className="form-label" style={{ marginBottom: '8px' }}>
                     खिलाड़ी पासपोर्ट फोटो (Photo - Max 2MB)

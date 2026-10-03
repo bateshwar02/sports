@@ -57,4 +57,45 @@ class FileUploader {
             'url' => '/uploads/' . trim($subfolder, '/') . '/' . $filename
         ];
     }
+
+    public static function uploadBase64(string $base64Data, string $subfolder): array {
+        if (!preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+            return ['success' => false, 'error' => 'Invalid image encoding format.'];
+        }
+
+        $extension = strtolower($type[1]);
+        if ($extension === 'jpeg') {
+            $extension = 'jpg';
+        }
+
+        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        if (!in_array($extension, $allowed)) {
+            return ['success' => false, 'error' => 'Unsupported image format: ' . $extension];
+        }
+
+        $rawData = substr($base64Data, strpos($base64Data, ',') + 1);
+        $binary = base64_decode($rawData, true);
+
+        if ($binary === false) {
+            return ['success' => false, 'error' => 'Base64 decoding failed.'];
+        }
+
+        $targetDir = __DIR__ . '/../uploads/' . trim($subfolder, '/') . '/';
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        }
+
+        $fileName = bin2hex(random_bytes(16)) . '.' . $extension;
+        $filePath = $targetDir . $fileName;
+
+        if (file_put_contents($filePath, $binary) === false) {
+            return ['success' => false, 'error' => 'Failed to write file to disk.'];
+        }
+
+        return [
+            'success'  => true,
+            'url'      => '/uploads/' . trim($subfolder, '/') . '/' . $fileName,
+            'filename' => $fileName
+        ];
+    }
 }

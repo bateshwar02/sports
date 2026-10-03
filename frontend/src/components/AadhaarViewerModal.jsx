@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Modal from './Modal'
 import Badge from './Badge'
-import { CheckCircle, XCircle, Eye, EyeOff, ShieldCheck, User, Calendar, MapPin, Phone } from 'lucide-react'
+import { CheckCircle, XCircle, Eye, EyeOff, ShieldCheck, Calendar, MapPin, Phone } from 'lucide-react'
 
 export default function AadhaarViewerModal({
   isOpen,
@@ -74,12 +74,12 @@ export default function AadhaarViewerModal({
         </div>
       }
     >
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
         {/* Left column: Photo & Details */}
         <div>
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
             <img
-              src={player.image_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'}
+              src={player.image_url}
               alt={player.name}
               style={{
                 width: '120px',
@@ -145,7 +145,7 @@ export default function AadhaarViewerModal({
 
             <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--slate-200)', background: '#000' }}>
               <img
-                src={player.aadhaar_url || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=400&q=80'}
+                src={player.aadhaar_url}
                 alt="Aadhaar ID Document"
                 style={{ width: '100%', height: '170px', objectFit: 'cover' }}
               />
