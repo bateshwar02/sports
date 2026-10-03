@@ -147,7 +147,7 @@ const initialData = {
   //     mobile: '9876500001',
   //     email: 'amit.sports@saripatti.org',
   //     village: 'सारीपट्टी (Saripatti)',
-  //     district: 'आजमगढ़ (Azamgarh)',
+  //     district: 'मिर्जापुर (Azamgarh)',
   //     status: 'active'
   //   },
   //   {
@@ -157,7 +157,7 @@ const initialData = {
   //     mobile: '9876500002',
   //     email: 'sunil.v@saripatti.org',
   //     village: 'बटेश्वर (Bateshwar)',
-  //     district: 'आजमगढ़ (Azamgarh)',
+  //     district: 'मिर्जापुर (Azamgarh)',
   //     status: 'active'
   //   },
   //   {

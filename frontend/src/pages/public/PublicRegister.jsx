@@ -319,7 +319,7 @@ export default function PublicRegister() {
                     type="text"
                     name="village"
                     className="form-input"
-                    placeholder="उदा. सारीपट्टी, बटेश्वर, आजमगढ़"
+                    placeholder="उदा. सारीपट्टी, बटेश्वर, मिर्जापुर"
                     value={formData.village}
                     onChange={handleChange}
                     required
