@@ -65,7 +65,12 @@ try {
     if (preg_match('#^/api/players/([0-9]+)/aadhaar$#', $path, $matches) && $requestMethod === 'GET') {
         PlayerController::getAadhaarUrl((int)$matches[1]);
         exit();
-        }
+    }
+
+    if ($requestMethod === 'DELETE' &&  preg_match('#^/api/players/(\d+)$#', $path, $matches)) {
+        PlayerController::destroy((int)$matches[1]);
+        exit();
+    }
 
     // Game routes
     if ($path === '/api/games') {
