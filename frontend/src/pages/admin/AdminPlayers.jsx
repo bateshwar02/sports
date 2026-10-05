@@ -46,7 +46,7 @@ export default function AdminPlayers() {
   };
 
   const handleInspect = async (player) => {
-    const aadhaarUrl = await api.getAadhaarUrl(player.id);
+    const aadhaarUrl = await api.getAadhaarUrl(player.user_id);
 
     const updatedPlayer = {
       ...player,
@@ -71,13 +71,14 @@ export default function AdminPlayers() {
     setEditModalOpen(false);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async(user_id) => {
     if (
       window.confirm(
         "क्या आप वाकई इस खिलाड़ी का पंजीकरण हटाना चाहते हैं? (Soft Delete)",
       )
     ) {
-      setPlayers((prev) => prev.filter((p) => p.id !== id));
+      await api.softDeletePlayer(user_id);
+      setPlayers((prev) => prev.filter((p) => p.user_id !== user_id));
     }
   };
 
@@ -232,7 +233,7 @@ export default function AdminPlayers() {
           <button
             type="button"
             className="btn btn-danger btn-sm"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row.user_id)}
             title="हटाएं (Delete)"
           >
             <Trash2 size={14} />

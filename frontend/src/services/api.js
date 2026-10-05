@@ -5,7 +5,7 @@
  * Features automatic fallback to localStorage store if backend is offline.
  */
 
-const API_BASE = "https://www.aravmzpsports.online/api"; //'http://localhost:8000/api'
+export const API_BASE =  "https://www.aravmzpsports.online/api"; // 'http://localhost:8000/api'
 
 // Helper for local mock responses
 
@@ -115,6 +115,20 @@ export const api = {
     }
   },
 
+  async softDeletePlayer(user_id) {
+    try {
+      const res = await fetch(`${API_BASE}/players/${user_id}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+      return res;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  // 5. Toggle Check-in: POST /api/players/{id}/checkin
+
   // Toggle court presence (Check-in)
   async toggleCheckIn(id, isPresent) {
     try {
@@ -131,9 +145,9 @@ export const api = {
   },
 
   // Get Aadhaar URL for a player
-  async getAadhaarUrl(id) {
+  async getAadhaarUrl(user_id) {
     try {
-      const res = await fetch(`${API_BASE}/players/${id}/aadhaar`, {
+      const res = await fetch(`${API_BASE}/players/${user_id}/aadhaar`, {
         method: "GET",
         credentials: "include",
       });

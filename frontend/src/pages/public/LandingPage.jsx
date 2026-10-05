@@ -219,7 +219,7 @@ export default function LandingPage() {
                 }}
               >
                 <MapPin size={18} color="var(--emerald-500)" />{" "}
-                <strong>ग्राम सभा सारीपट्टी, आजमगढ़</strong>
+                <strong>ग्राम सभा सारीपट्टी, मिर्जापुर</strong>
               </div>
               <div
                 style={{
@@ -723,7 +723,7 @@ export default function LandingPage() {
                   </div>
 
                   <div className="contact-value">
-                    मुख्य खेल मैदान, ग्राम सभा सारीपट्टी, आजमगढ़, उत्तर प्रदेश
+                    मुख्य खेल मैदान, ग्राम सभा सारीपट्टी, मिर्जापुर, उत्तर प्रदेश
                   </div>
                 </div>
               </div>

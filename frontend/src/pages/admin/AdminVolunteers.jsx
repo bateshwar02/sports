@@ -18,7 +18,7 @@ export default function AdminVolunteers() {
     mobile: '',
     email: '',
     village: '',
-    district: 'आजमगढ़ (Azamgarh)'
+    district: 'मिर्जापुर (Azamgarh)'
   })
 
   const [regionData, setRegionData] = useState({
@@ -65,7 +65,7 @@ export default function AdminVolunteers() {
     if (!formData.name || !formData.mobile || !formData.village) return
     await api.createVolunteer(formData)
     setAddModalOpen(false)
-    setFormData({ name: '', mobile: '', email: '', village: '', district: 'आजमगढ़ (Azamgarh)' })
+    setFormData({ name: '', mobile: '', email: '', village: '', district: 'मिर्जापुर (Azamgarh)' })
     loadVolunteers()
   }
 

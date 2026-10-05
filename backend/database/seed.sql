@@ -52,8 +52,8 @@ INSERT INTO game_slots (id, game_id, slot_name, start_time, end_time, allocated_
 
 -- 6. Volunteers
 INSERT INTO volunteers (id, user_id, name, mobile, email, village, district, status) VALUES
-(1, 2, 'अमित कुमार यादव (Amit Kumar)', '9876500001', 'amit.sports@saripatti.org', 'सारीपट्टी (Saripatti)', 'आजमगढ़ (Azamgarh)', 'active'),
-(2, 2, 'सुनील सिंह (Sunil Singh)', '9876500002', 'sunil.v@saripatti.org', 'बटेश्वर (Bateshwar)', 'आजमगढ़ (Azamgarh)', 'active'),
+(1, 2, 'अमित कुमार यादव (Amit Kumar)', '9876500001', 'amit.sports@saripatti.org', 'सारीपट्टी (Saripatti)', 'मिर्जापुर (Azamgarh)', 'active'),
+(2, 2, 'सुनील सिंह (Sunil Singh)', '9876500002', 'sunil.v@saripatti.org', 'बटेश्वर (Bateshwar)', 'मिर्जापुर (Azamgarh)', 'active'),
 (3, 2, 'पूजा मौर्या (Pooja Maurya)', '9876500003', 'pooja.m@saripatti.org', 'मऊ खास (Mau Khas)', 'मऊ (Mau)', 'active');
 
 -- 7. Players

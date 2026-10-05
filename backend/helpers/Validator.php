@@ -26,8 +26,8 @@ class Validator {
             $errors['father_name'] = "Father's Name is required";
         }
 
-        if (empty($data['game_id']) || !is_numeric($data['game_id'])) {
-            $errors['game_id'] = 'A valid Game ID must be selected';
+        if (empty($data['game_ids'])) {
+            $errors['game_ids'] = 'A valid Game ID must be selected';
         }
 
         if (empty($data['class_id']) || !is_numeric($data['class_id'])) {
